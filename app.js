@@ -1,3 +1,4 @@
+let fetchData;
 // fetch all itmes
 const container=document.getElementById('container');
 const fetchAllData=()=>{
@@ -5,6 +6,7 @@ const fetchAllData=()=>{
     .then(data=>{
         data.data.tools.forEach(result=>{
             singleData(result)
+
         })
     })
 }
@@ -12,12 +14,13 @@ const fetchAllData=()=>{
 // single items details
 const singleData=(data)=>{
     const {image,features,name,published_in,id}=data;
-    //console.log( features)
-     const div=document.createElement('div'); 
-     div.innerHTML=`
-     <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5">
-                <figure><img src="${image}" alt="${name}" class="h-[300px]" /></figure>
-                <div class="card-body ">
+    // console.log( data)
+    fetchData=published_in
+    const div=document.createElement('div'); 
+    div.innerHTML=`
+    <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5">
+    <figure><img src="${image}" alt="${name}" class="h-[300px]" /></figure>
+    <div class="card-body ">
                     <h2 class="card-title">Features</h2>
                     <ol id="${id}" class="list-decimal ml-3"></ol>
                     <hr>
@@ -25,10 +28,10 @@ const singleData=(data)=>{
                         <div>
                             <h1 class="text-3xl font-semibold mb-4">${name}</h1>
                             <div class="flex items-center">
-                                <i class="fa-solid fa-calendar-days mr-3"></i>
-                                <p>${published_in}</p>
+                            <i class="fa-solid fa-calendar-days mr-3"></i>
+                            <p>${published_in}</p>
                             </div>
-                        </div>
+                            </div>
                         <div>
                             <label for="my-modal-3" class="cursor-pointer" onclick="showModal('${id}')"><i class="fa-solid fa-arrow-right-long" ></i></label>
                         </div>
@@ -36,12 +39,12 @@ const singleData=(data)=>{
                 </div>
                 </div>
                 `
-     container.appendChild(div)
-     
-     featuresItems(features,id)
-    }
-    
-    fetchAllData()
+                container.appendChild(div)
+                
+                featuresItems(features,id)
+                
+            }
+            fetchAllData()
 
     // add features list
 const featuresItems=(data,id)=>{
@@ -64,36 +67,36 @@ const showModal=(id)=>{
 
 // add modal details
 const addModalDetails=(data)=>{
-    console.log(data)
+    // console.log(data)
     const modalContainer=document.getElementById('modal-container'); 
     const {image_link,pricing,features,input_output_examples,description}=data
     modalContainer.innerHTML=`
-    <div class="flex justify-between p-12">
-                <div>
-                    <p>${description}</p>
+    <div class="lg:flex items-center flex-cols flex-rows justify-between p-12">
+                <div class="bg-red-100 border-solid border-2 border-gray-500 p-8 w-full lg:w-[55%]">
+                    <p class="font-semibold mb-6">${description}</p>
                     <div class="grid grid-cols-3 gap-4 rounded-lg">
-                        <p class="text-green-500 bg-green-50 text-center">${pricing[0].price?pricing[0].price:"Not available"} <br> ${pricing[0].plan?pricing[0].plan:"Not available"}</p>
-                        <p class="text-yellow-500 bg-green-50 text-center">${pricing[1].price?pricing[1].price:"Not available"} <br> ${pricing[1].plan?pricing[0].plan:"Not available"}</p>
-                        <p class="text-red-500 bg-green-50 text-center">${pricing[2].price?pricing[2].price:"Not available"} <br> ${pricing[2].plan?pricing[2].plan:"Not available"}</p>
+                        <p class="text-green-500 bg-green-50 text-center font-bold">${pricing[0].price?pricing[0].price:"Not available"} <br> ${pricing[0].plan?pricing[0].plan:"Not available"}</p>
+                        <p class="text-yellow-500 bg-green-50 text-center" font-bold>${pricing[1].price?pricing[1].price:"Not available"} <br> ${pricing[1].plan?pricing[0].plan:"Not available"}</p>
+                        <p class="text-red-500 bg-green-50 text-center font-bold">${pricing[2].price?pricing[2].price:"Not available"} <br> ${pricing[2].plan?pricing[2].plan:"Not available"}</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-4 mt-6">
                         <div>
-                            <h1>Features</h1>
-                        <ol id="1${data.id}" class="list-disc">
+                            <h1 class="text-2xl font-semibold">Features</h1>
+                        <ol id="1${data.id}" class="list-disc text-[#585858] ml-7">
                             
                         </ol>
                         </div>
                         <div>
-                            <h1>Integrations</h1>
-                        <ol id="2${data.id}" class="list-disc">
+                            <h1 class="text-2xl font-semibold">Integrations</h1>
+                        <ol id="2${data.id}" class="list-disc ml-7">
                             
                         </ol>
                         </div>
                     </div>
                 </div>
-                <div class="ml-5">
+                <div class="ml-5border-2 border-solid border-green-500 lg: w-[45%] ">
                     <img src="${image_link[0]}">
-                    <div id="example${data.id}" class="text-center">
+                    <div id="example${data.id}" class="text-center mt-6">
                     </div>
                 </div>
             </div>
@@ -136,22 +139,27 @@ const modalFeatures=(data,id)=>{
 const addExample=(data,id)=>{
     console.log(data,id)
     const div=document.getElementById(id);
+    const p1=document.createElement('p');
+    p1.classList.add('txt-2xl');
+    p1.classList.add('font-semibold');
+    p1.classList.add('text-[#111111]');
+    const p2=document.createElement('p');
+    p2.classList.add('text-gray-500')
     // console.log(div)
     if(data.length===0)
     {
-        const p1=document.createElement('p');
-        const p2=document.createElement('p');
         p1.innerText="Can you give any example?";
         div.appendChild(p1);
         p2.innerText="No! Not Yet! Take a break!!!"; 
         div.appendChild(p2);
     }
     else{
-        const p1=document.createElement('p');
-        const p2=document.createElement('p');
+        
         p1.innerText=data[0].input;
         div.appendChild(p1);
         p2.innerText=data[0].output; 
         div.appendChild(p2);
     }
 }
+
+console.log(fetchData)
