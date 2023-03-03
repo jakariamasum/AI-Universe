@@ -1,4 +1,4 @@
-let fetchData=[1,2,3,4];
+let fetchData=[];
 // fetch all items
 const fetchAllData=(limit)=>{
     fetch('https://openapi.programming-hero.com/api/ai/tools').then(res=>res.json())
@@ -7,7 +7,7 @@ const fetchAllData=(limit)=>{
 
 // single items details
 const singleData=(data,limit)=>{
-    // console.log( data)
+     console.log( data)
     toggleLoader(true)
     if(limit && data.length>6)
     {
@@ -21,24 +21,26 @@ const singleData=(data,limit)=>{
     const container=document.getElementById('container');
     container.innerText=''
     data.forEach(result=>{
+         fetchData=result.published_in;
+        // console.log(fetchData)
         const div=document.createElement('div'); 
     div.innerHTML=`
     <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5 ">
     <figure><img src="${result.image}" alt="${result.name}" class="h-[300px]" /></figure>
     <div class="card-body ">
-                    <h2 class="card-title">Features</h2>
-                    <ol id="${result.id}" class="list-decimal ml-3"></ol>
+                    <h2 class="card-title text-3xl font-semibold text-[#111111]">Features</h2>
+                    <ol id="${result.id}" class="list-decimal ml-5 text-[#585858]"></ol>
                     <hr>
                     <div class="card-actions justify-between items-center mt-6">
                         <div>
-                            <h1 class="text-3xl font-semibold mb-4">${result.name}</h1>
-                            <div class="flex items-center">
+                            <h1 class="text-3xl font-semibold mb-4 text-[#111111]">${result.name}</h1>
+                            <div class="flex items-center text-[#585858]">
                             <i class="fa-solid fa-calendar-days mr-3"></i>
                             <p>${result.published_in}</p>
                             </div>
                             </div>
                         <div>
-                            <label for="my-modal-3" class="cursor-pointer" onclick="showModal('${result.id}')"><i class="fa-solid fa-arrow-right-long" ></i></label>
+                            <label for="my-modal-3" class="cursor-pointer" onclick="showModal('${result.id}')"><i class="fa-solid fa-arrow-right-long text-red-500" ></i></label>
                         </div>
                     </div>
                 </div>
@@ -73,10 +75,10 @@ const showModal=(id)=>{
 
 // add modal details
 const addModalDetails=(data)=>{
-      console.log(data)
+      //console.log(data)
     const modalContainer=document.getElementById('modal-container'); 
     const {image_link,pricing,features,input_output_examples,description}=data
-    console.log(pricing)
+    // console.log(pricing)
     modalContainer.innerHTML=`
     <div class="lg:flex items-center flex-cols flex-rows justify-between p-12">
                 <div class="bg-red-100 border-solid border-2 border-gray-500 p-8 w-full lg:w-[55%]">
@@ -189,3 +191,5 @@ const toggleLoader=(res)=>{
 document.getElementById('see-btn').addEventListener('click',()=>{
     fetchAllData()
 })
+//  console.log(fetchData)
+
