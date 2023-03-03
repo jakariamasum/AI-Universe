@@ -1,50 +1,48 @@
-let fetchData;
-// fetch all itmes
+let fetchData=[1,2,3,4];
+// fetch all items
 const container=document.getElementById('container');
 const fetchAllData=()=>{
     fetch('https://openapi.programming-hero.com/api/ai/tools').then(res=>res.json())
-    .then(data=>{
-        data.data.tools.forEach(result=>{
-            singleData(result)
-
-        })
-    })
+    .then(data=>singleData(data.data.tools))
 }
 
 // single items details
 const singleData=(data)=>{
-    const {image,features,name,published_in,id}=data;
     // console.log( data)
-    fetchData=published_in
-    const div=document.createElement('div'); 
+    toggleLoader(true)
+    data=data.slice(0,6);
+    // const {image,features,name,published_in,id}=data;
+    data.forEach(result=>{
+        const div=document.createElement('div'); 
     div.innerHTML=`
-    <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5">
-    <figure><img src="${image}" alt="${name}" class="h-[300px]" /></figure>
+    <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5 ">
+    <figure><img src="${result.image}" alt="${result.name}" class="h-[300px]" /></figure>
     <div class="card-body ">
                     <h2 class="card-title">Features</h2>
-                    <ol id="${id}" class="list-decimal ml-3"></ol>
+                    <ol id="${result.id}" class="list-decimal ml-3"></ol>
                     <hr>
                     <div class="card-actions justify-between items-center mt-6">
                         <div>
-                            <h1 class="text-3xl font-semibold mb-4">${name}</h1>
+                            <h1 class="text-3xl font-semibold mb-4">${result.name}</h1>
                             <div class="flex items-center">
                             <i class="fa-solid fa-calendar-days mr-3"></i>
-                            <p>${published_in}</p>
+                            <p>${result.published_in}</p>
                             </div>
                             </div>
                         <div>
-                            <label for="my-modal-3" class="cursor-pointer" onclick="showModal('${id}')"><i class="fa-solid fa-arrow-right-long" ></i></label>
+                            <label for="my-modal-3" class="cursor-pointer" onclick="showModal('${result.id}')"><i class="fa-solid fa-arrow-right-long" ></i></label>
                         </div>
                     </div>
                 </div>
                 </div>
                 `
                 container.appendChild(div)
-                
-                featuresItems(features,id)
+                featuresItems(result.features,result.id)
+    })
+    toggleLoader(false)
                 
             }
-            fetchAllData()
+fetchAllData()
 
     // add features list
 const featuresItems=(data,id)=>{
@@ -162,4 +160,11 @@ const addExample=(data,id)=>{
     }
 }
 
-console.log(fetchData)
+
+// add loader
+const toggleLoader=(res)=>{
+    if(res)
+    document.getElementById('loader').classList.remove('hidden');
+    else
+    document.getElementById('loader').classList.add('hidden');
+}
