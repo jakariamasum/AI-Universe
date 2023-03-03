@@ -1,6 +1,5 @@
 let fetchData=[1,2,3,4];
 // fetch all items
-const container=document.getElementById('container');
 const fetchAllData=(limit)=>{
     fetch('https://openapi.programming-hero.com/api/ai/tools').then(res=>res.json())
     .then(data=>singleData(data.data.tools,limit))
@@ -19,6 +18,8 @@ const singleData=(data,limit)=>{
         document.getElementById('see-more').classList.add('hidden')
     }
     // const {image,features,name,published_in,id}=data;
+    const container=document.getElementById('container');
+    container.innerText=''
     data.forEach(result=>{
         const div=document.createElement('div'); 
     div.innerHTML=`
@@ -72,7 +73,7 @@ const showModal=(id)=>{
 
 // add modal details
 const addModalDetails=(data)=>{
-    // console.log(data)
+      console.log(data)
     const modalContainer=document.getElementById('modal-container'); 
     const {image_link,pricing,features,input_output_examples,description}=data
     modalContainer.innerHTML=`
@@ -100,7 +101,8 @@ const addModalDetails=(data)=>{
                     </div>
                 </div>
                 <div class="ml-5border-2 border-solid border-green-500 lg: w-[45%] ">
-                    <img src="${image_link[0]}">
+                    <img src="${image_link[0]}" class="relative">
+                    ${data.accuracy.score? `<div class="badge absolute left-[880px] bottom-[400px]"">${data.accuracy.score?data.accuracy.score:''}</div>`:''}
                     <div id="example${data.id}" class="text-center mt-6">
                     </div>
                 </div>
@@ -142,7 +144,7 @@ const modalFeatures=(data,id)=>{
 
 // set example for modals
 const addExample=(data,id)=>{
-    console.log(data,id)
+    // console.log(data,id)
     const div=document.getElementById(id);
     const p1=document.createElement('p');
     p1.classList.add('txt-2xl');
