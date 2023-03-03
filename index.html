@@ -14,7 +14,7 @@
     <!-- name and button section start -->
     <header class="text-center my-12">
         <h1 class="text-4xl font-semibold mb-8">AI Universe Hub</h1>
-        <button class="btn btn-primary bg-red-500 border-none">Sort By Date</button>
+        <button id="sort-btn" class="btn btn-primary bg-red-500 border-none">Sort By Date</button>
     </header>
     <!-- name and button section end -->
 
@@ -22,9 +22,10 @@
     <main>
 
         <!-- cards section -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-[90%] mx-auto" id="container">
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4 w-[90%] mx-auto mb-5" id="container">
         </section>
 
+        <!-- see more btn -->
         <section class="text-center my-12 hidden" id="see-more">
             <button class="btn btn-primary bg-red-500 border-none" id="see-btn">See More</button>
         </section>
@@ -50,7 +51,7 @@
 
     </main>
     <!-- main section end -->
-    
+
     <script src="app.js"></script>
 </body>
 </html>

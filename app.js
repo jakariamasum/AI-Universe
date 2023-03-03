@@ -1,4 +1,5 @@
-let fetchData=[];
+let rootData;
+
 // fetch all items
 const fetchAllData=(limit)=>{
     fetch('https://openapi.programming-hero.com/api/ai/tools').then(res=>res.json())
@@ -8,21 +9,28 @@ const fetchAllData=(limit)=>{
 // single items details
 const singleData=(data,limit)=>{
      console.log( data)
-    toggleLoader(true)
-    if(limit && data.length>6)
+    toggleLoader(true);
+    if(limit && data.length>=6)
     {
         data=data.slice(0,6);
         document.getElementById('see-more').classList.remove('hidden');
     } 
+    else if(data.length===6)
+    {
+        data=data.slice(0,6);
+        
+        document.getElementById('see-more').classList.remove('hidden');
+    } 
     else {
         document.getElementById('see-more').classList.add('hidden')
+        i=1;
     }
-    // const {image,features,name,published_in,id}=data;
+     rootData=data;
     const container=document.getElementById('container');
     container.innerText=''
+
     data.forEach(result=>{
-         fetchData=result.published_in;
-        // console.log(fetchData)
+        //   console.log(fetchData)
         const div=document.createElement('div'); 
     div.innerHTML=`
     <div class="card card-compact w-full bg-base-100 shadow-xl border-solid border-2 border-gray-500 p-5 ">
@@ -49,12 +57,11 @@ const singleData=(data,limit)=>{
                 container.appendChild(div)
                 featuresItems(result.features,result.id)
     })
-    toggleLoader(false)
-                
-            }
+    toggleLoader(false)                
+}
 
 
-    // add features list
+// add features list
 const featuresItems=(data,id)=>{
     //console.log(data,id)
     const ol=document.getElementById(id)
@@ -63,7 +70,7 @@ const featuresItems=(data,id)=>{
         li.innerText=result;
         ol.appendChild(li)
     })
-}
+};
 
 
 // fetch modal details
@@ -75,20 +82,19 @@ const showModal=(id)=>{
 
 // add modal details
 const addModalDetails=(data)=>{
-      //console.log(data)
+    //   console.log(data)
     const modalContainer=document.getElementById('modal-container'); 
     const {image_link,pricing,features,input_output_examples,description}=data
-    // console.log(pricing)
     modalContainer.innerHTML=`
-    <div class="lg:flex items-center flex-cols flex-rows justify-between p-12">
-                <div class="bg-red-100 border-solid border-2 border-gray-500 p-8 w-full lg:w-[55%]">
+    <div class="lg:flex justify-between lg:p-5">
+                <div class="bg-red-100 border-solid border-2 border-gray-500  w-full lg:w-[55%] p-8">
                     <p class="font-semibold mb-6">${description}</p>
-                    <div class="grid grid-cols-3 gap-4 rounded-lg">
+                    <div class="grid grid-cols-1 rounded-lg lg:grid-cols-3 gap-4 ">
                         <p class="text-green-500 bg-green-50 text-center font-bold">${pricing?pricing[0].price:"Free of"} <br> ${pricing?pricing[0].plan:"Cost/Basic"}</p>
                         <p class="text-yellow-500 bg-green-50 text-center" font-bold>${pricing?pricing[1].price:"Free of"} <br> ${pricing?pricing[0].plan:"Cost/Pro"}</p>
                         <p class="text-red-500 bg-green-50 text-center font-bold">${pricing?pricing[2].price:"Free of Cost/"} <br> ${pricing?pricing[2].plan:"Enterprise"}</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="grid grid-cols-1 mt-6 lg:grid-cols-2 gap-4">
                         <div>
                             <h1 class="text-2xl font-semibold">Features</h1>
                         <ol id="1${data.id}" class="list-disc text-[#585858] ml-7">
@@ -103,20 +109,20 @@ const addModalDetails=(data)=>{
                         </div>
                     </div>
                 </div>
-                <div class="ml-5border-2 border-solid border-green-500 lg: w-[45%] ml-5">
+                <div class="border-2 border-solid border-green-500 w-full mt-5 lg:w-[45%] ml-5 mx-auto">
                     <img src="${image_link[0]}" class="relative">
                     ${data.accuracy.score? `<div class="badge absolute left-[880px] bottom-[400px]"">${data.accuracy.score?(data.accuracy.score)*100 +"% accuracy":''}</div>`:''}
                     <div id="example${data.id}" class="text-center mt-6">
                     </div>
-                </div>
-            </div>
-    `
-    modalFeatures(data.features,'1'+data.id)
-    integrationsFeatures(data.integrations,'2'+data.id)
-    addExample(data.input_output_examples,'example'+data.id)
-}
-
-
+                    </div>
+                    </div>
+                    `
+                    modalFeatures(data.features,'1'+data.id)
+                    integrationsFeatures(data.integrations,'2'+data.id)
+                    addExample(data.input_output_examples,'example'+data.id)
+                }
+                
+                
 // integrations Features lists
 const integrationsFeatures=(data,id)=>
 {
@@ -127,19 +133,17 @@ const integrationsFeatures=(data,id)=>
         ol.innerText="No data Found";
     }
     else{
-        for(const single of data){
+        for(const singleData of data){
             const li=document.createElement('li');
             // console.log(single)
-            li.innerText=single; 
+            li.innerText=singleData; 
             ol.appendChild(li)
         }
     }
-   // console.log(ol) 
 }
 
 // modal features lists
 const modalFeatures=(data,id)=>{
-    //  console.log(data['1'])
     const ol=document.getElementById(id);
      for(const single in data){
         const li=document.createElement('li');
@@ -147,8 +151,7 @@ const modalFeatures=(data,id)=>{
         li.innerText=data[single].feature_name; 
         ol.appendChild(li)
      }
-    
-}
+};
 
 
 // set example for modals
@@ -161,7 +164,6 @@ const addExample=(data,id)=>{
     p1.classList.add('text-[#111111]');
     const p2=document.createElement('p');
     p2.classList.add('text-gray-500')
-    // console.log(div)
     if(data===null)
     {
         p1.innerText="Can you give any example?";
@@ -176,20 +178,35 @@ const addExample=(data,id)=>{
         p2.innerText=data[0].output; 
         div.appendChild(p2);
     }
-}
+};
 
 
 // add loader
-const toggleLoader=(res)=>{
-    if(res)
+const toggleLoader=(response)=>{
+    if(response)
     document.getElementById('loader').classList.remove('hidden');
     else
     document.getElementById('loader').classList.add('hidden');
-}
+};
 
 // see more button's functionality
 document.getElementById('see-btn').addEventListener('click',()=>{
     fetchAllData()
 })
-//  console.log(fetchData)
+
+// sort btn functionality
+document.getElementById('sort-btn').addEventListener('click',function(){
+    const sorting=(a,b)=>{
+        const dateA=new Date(a.published_in);
+        const dateB=new Date(b.published_in);
+        if(dateA>dateB){
+            return 1;
+        } 
+        else if(dateA <dateB){
+            return -1;
+        }
+        else return 0;
+    };
+     singleData(rootData.sort(sorting))
+})
 
