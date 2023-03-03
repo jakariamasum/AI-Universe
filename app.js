@@ -45,6 +45,7 @@ const singleData=(data)=>{
 
     // add features list
 const featuresItems=(data,id)=>{
+    //console.log(data,id)
     const ol=document.getElementById(id)
     data.forEach(result=>{
         const li=document.createElement('li'); 
@@ -54,7 +55,7 @@ const featuresItems=(data,id)=>{
 }
 
 
-// modal details
+// fetch modal details
 const showModal=(id)=>{
     const url=`https://openapi.programming-hero.com/api/ai/tool/${id}`
     fetch(url).then(res=>res.json()).then(data=>addModalDetails(data.data))
@@ -70,34 +71,62 @@ const addModalDetails=(data)=>{
     <div class="flex justify-between p-12">
                 <div>
                     <p>${description}</p>
-                    <div class="grid grid-cols-3 gap-4 rounded-lg bg-white">
-                        <p class="text-green-500">${pricing[0].price} <br> ${pricing[0].plan}</p>
-                        <p class="text-yellow-500">${pricing[1].price} <br> ${pricing[1].plan}</p>
-                        <p class="text-red-500">${pricing[2].price} <br> ${pricing[2].plan}</p>
+                    <div class="grid grid-cols-3 gap-4 rounded-lg">
+                        <p class="text-green-500 bg-green-50 text-center">${pricing[0].price?pricing[0].price:"Not available"} <br> ${pricing[0].plan?pricing[0].plan:"Not available"}</p>
+                        <p class="text-yellow-500 bg-green-50 text-center">${pricing[1].price?pricing[1].price:"Not available"} <br> ${pricing[1].plan?pricing[0].plan:"Not available"}</p>
+                        <p class="text-red-500 bg-green-50 text-center">${pricing[2].price?pricing[2].price:"Not available"} <br> ${pricing[2].plan?pricing[2].plan:"Not available"}</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <h1>Features</h1>
-                        <ul>
-                            <li>dfn</li>
-                            <li>dsfknq</li>
-                            <li>dflkl</li>
-                        </ul>
+                        <ol id="1${data.id}" class="list-disc">
+                            
+                        </ol>
                         </div>
                         <div>
-                            <h1>Features</h1>
-                        <ul>
-                            <li>dfn</li>
-                            <li>dsfknq</li>
-                            <li>dflkl</li>
-                        </ul>
+                            <h1>Integrations</h1>
+                        <ol id="2${data.id}" class="list-disc">
+                            
+                        </ol>
                         </div>
                     </div>
                 </div>
-                <div>
+                <div class="ml-5">
                     <img src="${image_link[0]}">
+                    <div>
+                    <p></p>
+                    </div>
                 </div>
             </div>
     `
+    modalFeatures(data.features,'1'+data.id)
+    integrationsFeatures(data.integrations,'2'+data.id)
 }
 
+
+// integrations Features lists
+const integrationsFeatures=(data,id)=>
+{
+    //  console.log( data,1+id)
+    const ol=document.getElementById(id);
+     for(const single of data){
+         const li=document.createElement('li');
+         // console.log(single)
+         li.innerText=single; 
+         ol.appendChild(li)
+     }
+   // console.log(ol) 
+}
+
+// modal features lists
+const modalFeatures=(data,id)=>{
+    //  console.log(data['1'])
+    const ol=document.getElementById(id);
+     for(const single in data){
+        const li=document.createElement('li');
+        // console.log(data[single].feature_name)
+        li.innerText=data[single].feature_name; 
+        ol.appendChild(li)
+     }
+    
+}
