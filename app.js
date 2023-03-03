@@ -76,14 +76,15 @@ const addModalDetails=(data)=>{
       console.log(data)
     const modalContainer=document.getElementById('modal-container'); 
     const {image_link,pricing,features,input_output_examples,description}=data
+    console.log(pricing)
     modalContainer.innerHTML=`
     <div class="lg:flex items-center flex-cols flex-rows justify-between p-12">
                 <div class="bg-red-100 border-solid border-2 border-gray-500 p-8 w-full lg:w-[55%]">
                     <p class="font-semibold mb-6">${description}</p>
                     <div class="grid grid-cols-3 gap-4 rounded-lg">
-                        <p class="text-green-500 bg-green-50 text-center font-bold">${pricing[0].price?pricing[0].price:"Not available"} <br> ${pricing[0].plan?pricing[0].plan:"Not available"}</p>
-                        <p class="text-yellow-500 bg-green-50 text-center" font-bold>${pricing[1].price?pricing[1].price:"Not available"} <br> ${pricing[1].plan?pricing[0].plan:"Not available"}</p>
-                        <p class="text-red-500 bg-green-50 text-center font-bold">${pricing[2].price?pricing[2].price:"Not available"} <br> ${pricing[2].plan?pricing[2].plan:"Not available"}</p>
+                        <p class="text-green-500 bg-green-50 text-center font-bold">${pricing?pricing[0].price:"Free of"} <br> ${pricing?pricing[0].plan:"Cost/Basic"}</p>
+                        <p class="text-yellow-500 bg-green-50 text-center" font-bold>${pricing?pricing[1].price:"Free of"} <br> ${pricing?pricing[0].plan:"Cost/Pro"}</p>
+                        <p class="text-red-500 bg-green-50 text-center font-bold">${pricing?pricing[2].price:"Free of Cost/"} <br> ${pricing?pricing[2].plan:"Enterprise"}</p>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-6">
                         <div>
@@ -100,9 +101,9 @@ const addModalDetails=(data)=>{
                         </div>
                     </div>
                 </div>
-                <div class="ml-5border-2 border-solid border-green-500 lg: w-[45%] ">
+                <div class="ml-5border-2 border-solid border-green-500 lg: w-[45%] ml-5">
                     <img src="${image_link[0]}" class="relative">
-                    ${data.accuracy.score? `<div class="badge absolute left-[880px] bottom-[400px]"">${data.accuracy.score?data.accuracy.score:''}</div>`:''}
+                    ${data.accuracy.score? `<div class="badge absolute left-[880px] bottom-[400px]"">${data.accuracy.score?(data.accuracy.score)*100 +"% accuracy":''}</div>`:''}
                     <div id="example${data.id}" class="text-center mt-6">
                     </div>
                 </div>
@@ -117,14 +118,20 @@ const addModalDetails=(data)=>{
 // integrations Features lists
 const integrationsFeatures=(data,id)=>
 {
-    //  console.log( data,1+id)
     const ol=document.getElementById(id);
-     for(const single of data){
-         const li=document.createElement('li');
-         // console.log(single)
-         li.innerText=single; 
-         ol.appendChild(li)
-     }
+    //   console.log( data)
+    if(data===null)
+    {
+        ol.innerText="No data Found";
+    }
+    else{
+        for(const single of data){
+            const li=document.createElement('li');
+            // console.log(single)
+            li.innerText=single; 
+            ol.appendChild(li)
+        }
+    }
    // console.log(ol) 
 }
 
@@ -153,7 +160,7 @@ const addExample=(data,id)=>{
     const p2=document.createElement('p');
     p2.classList.add('text-gray-500')
     // console.log(div)
-    if(data.length===0)
+    if(data===null)
     {
         p1.innerText="Can you give any example?";
         div.appendChild(p1);
