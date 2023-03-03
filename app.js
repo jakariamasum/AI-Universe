@@ -93,14 +93,14 @@ const addModalDetails=(data)=>{
                 </div>
                 <div class="ml-5">
                     <img src="${image_link[0]}">
-                    <div>
-                    <p></p>
+                    <div id="example${data.id}" class="text-center">
                     </div>
                 </div>
             </div>
     `
     modalFeatures(data.features,'1'+data.id)
     integrationsFeatures(data.integrations,'2'+data.id)
+    addExample(data.input_output_examples,'example'+data.id)
 }
 
 
@@ -129,4 +129,29 @@ const modalFeatures=(data,id)=>{
         ol.appendChild(li)
      }
     
+}
+
+
+// set example for modals
+const addExample=(data,id)=>{
+    console.log(data,id)
+    const div=document.getElementById(id);
+    // console.log(div)
+    if(data.length===0)
+    {
+        const p1=document.createElement('p');
+        const p2=document.createElement('p');
+        p1.innerText="Can you give any example?";
+        div.appendChild(p1);
+        p2.innerText="No! Not Yet! Take a break!!!"; 
+        div.appendChild(p2);
+    }
+    else{
+        const p1=document.createElement('p');
+        const p2=document.createElement('p');
+        p1.innerText=data[0].input;
+        div.appendChild(p1);
+        p2.innerText=data[0].output; 
+        div.appendChild(p2);
+    }
 }
