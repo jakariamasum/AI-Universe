@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/665d6425d5.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body onload="fetchAllData(6)">
 
     <!-- name and button section start -->
     <header class="text-center my-12">
@@ -26,7 +26,7 @@
         </section>
 
         <section class="text-center my-12 hidden" id="see-more">
-            <button class="btn btn-primary bg-red-500 border-none">See More</button>
+            <button class="btn btn-primary bg-red-500 border-none" id="see-btn">See More</button>
         </section>
 
     <section>

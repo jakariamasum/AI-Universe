@@ -1,16 +1,23 @@
 let fetchData=[1,2,3,4];
 // fetch all items
 const container=document.getElementById('container');
-const fetchAllData=()=>{
+const fetchAllData=(limit)=>{
     fetch('https://openapi.programming-hero.com/api/ai/tools').then(res=>res.json())
-    .then(data=>singleData(data.data.tools))
+    .then(data=>singleData(data.data.tools,limit))
 }
 
 // single items details
-const singleData=(data)=>{
+const singleData=(data,limit)=>{
     // console.log( data)
     toggleLoader(true)
-    data=data.slice(0,6);
+    if(limit && data.length>6)
+    {
+        data=data.slice(0,6);
+        document.getElementById('see-more').classList.remove('hidden');
+    } 
+    else {
+        document.getElementById('see-more').classList.add('hidden')
+    }
     // const {image,features,name,published_in,id}=data;
     data.forEach(result=>{
         const div=document.createElement('div'); 
@@ -42,7 +49,7 @@ const singleData=(data)=>{
     toggleLoader(false)
                 
             }
-fetchAllData()
+
 
     // add features list
 const featuresItems=(data,id)=>{
@@ -168,3 +175,8 @@ const toggleLoader=(res)=>{
     else
     document.getElementById('loader').classList.add('hidden');
 }
+
+// see more button's functionality
+document.getElementById('see-btn').addEventListener('click',()=>{
+    fetchAllData()
+})
