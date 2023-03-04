@@ -35,9 +35,9 @@ const singleData=(data,limit)=>{
     <figure><img src="${result.image}" alt="${result.name}" class="h-[300px]" /></figure>
     <div class="card-body ">
                     <h2 class="card-title text-3xl font-semibold text-[#111111]">Features</h2>
-                    <ol id="${result.id}" class="list-decimal ml-5 text-[#585858]"></ol>
+                    <ol id="${result.id}" class="list-decimal ml-5 text-[#585858] mb-6"></ol>
                     <hr>
-                    <div class="card-actions justify-between items-center mt-6">
+                    <div class="card-actions justify-between items-center mt-3">
                         <div>
                             <h1 class="text-3xl font-semibold mb-4 text-[#111111]">${result.name}</h1>
                             <div class="flex items-center text-[#585858]">
@@ -85,7 +85,7 @@ const addModalDetails=(data)=>{
     modalContainer.innerHTML=`
     <div class="lg:flex justify-between lg:p-5">
 
-                <div class="bg-red-100 border-solid border-2 border-gray-500  w-full lg:w-[55%] p-8">
+                <div class="bg-red-100 border-solid border-2 border-red-300 rounded-lg  w-full lg:w-[55%] p-8">
                     <p class="font-semibold mb-6">${description}</p>
                     <div class="grid grid-cols-1 rounded-lg lg:grid-cols-3 gap-4 ">
                         <p class="text-green-500 bg-green-50 text-center font-bold">${pricing?(pricing[0].price==='0' || pricing[0].price==='No cost')?"Free of Cost/":pricing[0].price:"Free of Cost/"} <br> ${pricing?pricing[0].plan:"Basic"}</p>
@@ -105,7 +105,7 @@ const addModalDetails=(data)=>{
                     </div>
                 </div>
 
-                    <div class="border-2 border-solid border-green-500 w-full mt-5 relative lg:w-[45%] lg:ml-5">
+                    <div class="w-full mt-5 relative lg:w-[45%] lg:ml-5">
                     <img src="${image_link[0]}" class="relative h-[340px]">
                     ${data.accuracy.score? `<div class="badge absolute bottom-[390px] right-[25px] bg-red-400 p-4">${data.accuracy.score?(data.accuracy.score)*100 +"% accuracy":''}</div>`:''}
                     <div id="example${id}" class="text-center mt-6"></div>
